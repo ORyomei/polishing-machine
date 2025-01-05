@@ -1,0 +1,4 @@
+#ifndef _SOLENOID_CONTROLLER_H_
+#define _SOLENOID_CONTROLLER_H_
+
+#endif
