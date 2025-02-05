@@ -29,4 +29,7 @@
 #define BUTTON_C_PIN 25
 #define BUTTON_D_PIN 33
 
+#define SOLENOID_DUTY 0.5
+#define SOLENOID_DEFAULT_FREQUENCY 10
+
 #endif

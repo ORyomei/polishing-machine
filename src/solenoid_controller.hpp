@@ -16,7 +16,7 @@ public:
 
 private:
     uint8_t pin = SOLENOID_PIN;
-    double duty = SOLINOID_DUTY;
+    double duty = SOLENOID_DUTY;
     double frequency;
     bool state;
     bool enabled;
