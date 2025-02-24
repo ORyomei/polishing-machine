@@ -1,31 +1,36 @@
-#include "solenoid_controller.hpp"
+#include <Arduino.h>
+#include "motor/motor_controller.hpp"
+#include "motor/motor_state_controller.hpp"
+#include "sensor/sensor.hpp"
+#include "switch.hpp"
 
-SolenoidController solenoidController;
-TaskHandle_t solenoidControlTask;
+Sensor sensor;
+MotorSwitch motorSwitch = MotorSwitch(FWD_PIN, REV_PIN);
+MotorController motorController = MotorController(sensor);
+MotorStateController motorStateController = MotorStateController(&motorController);
 
 void setup()
 {
-  solenoidController.initialize();
-  solenoidController.enable();
-  xTaskCreatePinnedToCore(startSolenoid, "SolenoidControlTask", 8192, &solenoidController, 1, &solenoidControlTask, 0);
+  Serial.begin(115200);
+  Serial.println("Start");
+  sensor.initialize();
+  motorSwitch.initialize();
+  sensor.read();
+  Serial.println("Sensor initialized");
+  motorStateController.initialize();
 }
 
 void loop()
 {
-  int p = 5;
-  int freq = 5;
-  while (true)
+  motorSwitch.read();
+  if (motorSwitch.changed())
   {
-    delay(1000);
-    if (freq >= 40)
-    {
-      p = -5;
-    }
-    else if (freq <= 5)
-    {
-      p = 5;
-    }
-    freq += p;
-    solenoidController.setFrequency(freq);
+    motorStateController.setState(motorSwitch.getState());
+  }
+  sensor.read();
+  // Serial.printf("Raw: %d, Converted: %f\n", sensor.getRawValue(), sensor.convertedValue());
+  if (!sensor.isInRange())
+  {
+    motorController.off();
   }
 }
