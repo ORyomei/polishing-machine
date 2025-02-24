@@ -1,31 +1,36 @@
 #include "sensor.hpp"
 
-Sensor::Sensor(uint16_t rawMinValue, uint16_t rawMaxValue, double minValue, double maxValue, double margin)
-    : rawMinValue(rawMinValue), rawMaxValue(rawMaxValue), minValue(minValue), maxValue(maxValue), margin(margin)
+Sensor::Sensor(int16_t rawMinValue, int16_t rawMaxValue, double minValue, double maxValue, double lowerLimit, double upperLimit)
+    : rawMinValue(rawMinValue), rawMaxValue(rawMaxValue), minValue(minValue), maxValue(maxValue), lowerLimit(lowerLimit), upperLimit(upperLimit)
 {
     setConversion(minValue, maxValue);
 }
 
-void Sensor::setRawMin(uint16_t val)
+void Sensor::initialize()
+{
+    adc.begin();
+}
+
+void Sensor::setRawMin(int16_t val)
 {
     rawMinValue = val;
     setConversion();
 }
 
-void Sensor::setRawMax(uint16_t val)
+void Sensor::setRawMax(int16_t val)
 {
     rawMaxValue = val;
     setConversion();
 }
 
-uint16_t Sensor::setCurrentValRawMin()
+int16_t Sensor::setCurrentValRawMin()
 {
     rawMinValue = rawValue;
     setConversion();
     return rawMinValue;
 }
 
-uint16_t Sensor::setCurrentValRawMax()
+int16_t Sensor::setCurrentValRawMax()
 {
     rawMaxValue = rawValue;
     setConversion();
@@ -52,7 +57,7 @@ double Sensor::convertedValue()
 bool Sensor::isInRange()
 {
     double value = convertedValue();
-    if (value < minValue - margin || value > maxValue + margin)
+    if (value < lowerLimit || value > upperLimit)
     {
         return false;
     }
@@ -69,7 +74,12 @@ double Sensor::getMinValue()
     return minValue;
 }
 
-uint16_t Sensor::getRawValue()
+int16_t Sensor::getRawValue()
 {
     return rawValue;
+}
+
+void Sensor::read()
+{
+    rawValue = adc.read();
 }
