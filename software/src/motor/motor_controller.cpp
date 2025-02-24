@@ -71,10 +71,16 @@ void MotorController::moveToStanbyPosition()
     int steps = (targetPosition - currentPosition) * POSITION_TO_MOTOR_STEPS_COEFFICIENT;
     stepper.moveTo(stepper.currentPosition() + steps);
     arrived = false;
-    while (!arrived)
+    arrivedAtStandby = false;
+    while (true)
     {
+        if (arrived)
+        {
+            break;
+        }
         delay(1);
     }
+    arrivedAtStandby = true;
     while (true)
     {
         delay(1);

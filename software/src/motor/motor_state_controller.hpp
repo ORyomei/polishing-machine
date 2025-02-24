@@ -11,13 +11,17 @@ public:
     MotorStateController(MotorController *motorController) : motorController(motorController) {}
     void initialize();
     void setState(MotorSwitchState state);
+    void waitForArrivalToStandby();
 
 private:
     TaskHandle_t motorRunTask, motorReciprocalMotionTask, motorMoveToStandbyTask;
+    TaskHandle_t waitForArrivalToStandbyTask;
     MotorController *motorController;
     MotorState motorState = MotorState::OFF;
-    MotorSwitchState motorSwitchState = MotorSwitchState::OFF;
+    MotorSwitchState switchState = MotorSwitchState::OFF;
     void setState(MotorState state);
 };
+
+void _waitForArrivalToStandby(void *motorStateController);
 
 #endif

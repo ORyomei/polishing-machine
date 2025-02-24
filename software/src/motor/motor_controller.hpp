@@ -21,13 +21,15 @@ public:
     void startMotorRun();
     void startReciprocalMotionControl();
     void moveToStanbyPosition();
-    // void moveToUpperPosition();
-    // void moveToLowerPosition();
+    bool arrivedAtStandbyPosition() { return arrivedAtStandby; }
 
 private:
-    double upperPosition, lowerPosition, standbyPosition;
+    double upperPosition,
+        lowerPosition,
+        standbyPosition;
     bool isOn;
     bool arrived = false;
+    bool arrivedAtStandby = false;
     uint8_t enablePin = STEPPER_ENABLE_PIN;
     AccelStepper stepper = AccelStepper(AccelStepper::FULL2WIRE, STEPPER_STEP_PIN, STEPPER_DIR_PIN);
     Sensor &sensor;
