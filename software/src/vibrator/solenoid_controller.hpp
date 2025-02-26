@@ -1,6 +1,6 @@
 #ifndef _SOLENOID_CONTROLLER_H_
 #define _SOLENOID_CONTROLLER_H_
-#include "constants.hpp"
+#include "config/constants.hpp"
 #include <Arduino.h>
 
 class SolenoidController
@@ -15,7 +15,7 @@ public:
     void run();
 
 private:
-    uint8_t pin = SOLENOID_PIN;
+    uint8_t pin = VIBRATOR_PIN;
     double duty = SOLENOID_DUTY;
     double frequency;
     bool state;

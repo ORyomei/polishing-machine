@@ -1,7 +1,7 @@
 #include "sensor.hpp"
 
 Sensor::Sensor(int16_t rawMinValue, int16_t rawMaxValue, double minValue, double maxValue, double lowerLimit, double upperLimit)
-    : rawMinValue(rawMinValue), rawMaxValue(rawMaxValue), minValue(minValue), maxValue(maxValue), lowerLimit(lowerLimit), upperLimit(upperLimit)
+    : rawMinValue(rawMinValue), rawMaxValue(rawMaxValue), minValue(minValue), maxValue(maxValue), lowerLimit(lowerLimit), upperLimit(upperLimit), inRangeChecker(lowerLimit, upperLimit)
 {
     setConversion(minValue, maxValue);
 }
@@ -57,11 +57,7 @@ double Sensor::convertedValue()
 bool Sensor::isInRange()
 {
     double value = convertedValue();
-    if (value < lowerLimit || value > upperLimit)
-    {
-        return false;
-    }
-    return true;
+    return inRangeChecker.isInRangeForPeriod(value);
 }
 
 double Sensor::getMaxValue()

@@ -14,6 +14,37 @@
 #define SENSOR_RAW_MIN 0
 #define SENSOR_RAW_MAX 20000
 
+#define SENSOR_IN_RANGE_PERIOD 100 // ms
+
+class InRangeChecker
+{
+public:
+    InRangeChecker(double lowerLimit, double upperLimit) : lowerLimit(lowerLimit), upperLimit(upperLimit) {}
+    bool isInRangeForPeriod(double value)
+    {
+        unsigned long now = millis();
+        if (lastInRangeTime == 0)
+        {
+            lastInRangeTime = now;
+            return true;
+        }
+        if (lowerLimit <= value && value <= upperLimit)
+        {
+            lastInRangeTime = now;
+            return true;
+        }
+        if (now - lastInRangeTime > SENSOR_IN_RANGE_PERIOD)
+        {
+            return false;
+        }
+        return true;
+    }
+
+private:
+    double lowerLimit, upperLimit;
+    unsigned long lastInRangeTime = 0;
+};
+
 class Sensor
 {
 public:
@@ -39,6 +70,7 @@ protected:
     const double lowerLimit, upperLimit;
     const double minValue, maxValue;
     double intercept, slope;
+    InRangeChecker inRangeChecker;
 };
 
 #endif

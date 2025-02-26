@@ -1,7 +1,7 @@
 #ifndef _SWITCH_H_
 #define _SWITCH_H_
 #include <Arduino.h>
-#include "constants.hpp"
+#include "config/constants.hpp"
 #include "motor/motor_state.hpp"
 
 #define SWITCH_DURATION 50 // ms
@@ -33,7 +33,7 @@ private:
 class MotorSwitch
 {
 public:
-    MotorSwitch(uint8_t fwdPin = FWD_PIN, uint8_t revPin = REV_PIN);
+    MotorSwitch(uint8_t fwdPin = BLDC_FWD_PIN, uint8_t revPin = BLDC_REV_PIN);
     void initialize();
     void read();
     bool changed();

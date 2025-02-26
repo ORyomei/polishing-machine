@@ -4,14 +4,12 @@
 #include <Arduino.h>
 #include <Adafruit_ADS1X15.h>
 #include "gpio_interrupt.hpp"
-
-// volatile bool existNewData;
-// void IRAM_ATTR onAlertPinFall();
+#include "config/constants.hpp"
 
 class Adc : public Adafruit_ADS1115
 {
 public:
-    Adc(uint8_t alertPin = 4, uint8_t i2c_addr = ADS1X15_ADDRESS, TwoWire *wire = &Wire);
+    Adc(uint8_t alertPin = ADC_ALERT_PIN, uint8_t i2c_addr = ADS1X15_ADDRESS, TwoWire *wire = &Wire);
     void begin();
     int16_t read();
     int16_t getRawValue() { return rawValue; }

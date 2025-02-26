@@ -2,19 +2,19 @@
 #define _MOTOR_CONTROOLER_H_
 #include <Arduino.h>
 #include <AccelStepper.h>
-#include "constants.hpp"
+#include "config/constants.hpp"
 #include "sensor/sensor.hpp"
 
 #define MOTOR_CONTROL_CYLCLE_TIME 30 // ms
 #define MOTOR_MAX_SPEED 3000
 #define MOTOR_ACCELERATION 2000
 
-#define POSITION_TO_MOTOR_STEPS_COEFFICIENT 842.105
+#define POSITION_TO_MOTOR_STEPS_COEFFICIENT 753.202
 
 class MotorController
 {
 public:
-    MotorController(Sensor &sensor) : sensor(sensor) {}
+    MotorController(Sensor &sensor);
     void initialize();
     void on();
     void off();
@@ -22,6 +22,9 @@ public:
     void startReciprocalMotionControl();
     void moveToStanbyPosition();
     bool arrivedAtStandbyPosition() { return arrivedAtStandby; }
+
+    void setUpperPosition(double position) { upperPosition = position; }
+    void setLowerPosition(double position) { lowerPosition = position; }
 
 private:
     double upperPosition,

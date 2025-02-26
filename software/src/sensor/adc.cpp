@@ -6,7 +6,7 @@ void Adc::begin()
 {
     alertInterrupt.begin();
     setGain(GAIN_TWOTHIRDS);
-    setDataRate(RATE_ADS1115_475SPS);
+    setDataRate(RATE_ADS1115_128SPS);
     while (!Adafruit_ADS1115::begin(i2c_addr, wire))
         ;
     startADCReading(ADS1X15_REG_CONFIG_MUX_SINGLE_0, true);

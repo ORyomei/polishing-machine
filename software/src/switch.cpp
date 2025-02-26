@@ -4,7 +4,7 @@ ToggleSwitch::ToggleSwitch(uint8_t pin) : pin(pin) {}
 
 void ToggleSwitch::initialize()
 {
-    pinMode(pin, INPUT_PULLUP);
+    pinMode(pin, INPUT);
     state = digitalRead(pin);
     lastState = state;
     _isOn = state == onState;

@@ -124,6 +124,16 @@ void MotorStateController::waitForArrivalToStandby()
     }
 }
 
+void MotorStateController::off()
+{
+    setState(MotorState::OFF);
+}
+
+bool MotorStateController::motorRunning()
+{
+    return motorState == MotorState::ON || motorState == MotorState::MOVE_TO_STANDBY;
+}
+
 void _waitForArrivalToStandby(void *motorStateController)
 {
     ((MotorStateController *)motorStateController)->waitForArrivalToStandby();

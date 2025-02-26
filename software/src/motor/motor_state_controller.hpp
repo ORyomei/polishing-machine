@@ -12,6 +12,8 @@ public:
     void initialize();
     void setState(MotorSwitchState state);
     void waitForArrivalToStandby();
+    void off();
+    bool motorRunning();
 
 private:
     TaskHandle_t motorRunTask, motorReciprocalMotionTask, motorMoveToStandbyTask;

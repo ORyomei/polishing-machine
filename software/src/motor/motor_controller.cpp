@@ -1,11 +1,12 @@
 #include "motor_controller.hpp"
 
+MotorController::MotorController(Sensor &sensor) : sensor(sensor)
+{
+    standbyPosition = STANDBY_POSITION;
+}
+
 void MotorController::initialize()
 {
-    upperPosition = UPPER_POSITION;
-    lowerPosition = LOWER_POSITION;
-    standbyPosition = STANDBY_POSITION;
-
     stepper.setEnablePin(enablePin);
     stepper.setPinsInverted(false, false, true);
     stepper.setMaxSpeed(MOTOR_MAX_SPEED);
@@ -15,12 +16,14 @@ void MotorController::initialize()
 
 void MotorController::on()
 {
+    Serial.println("Motor ON");
     stepper.enableOutputs();
     isOn = true;
 }
 
 void MotorController::off()
 {
+    Serial.println("Motor OFF");
     stepper.disableOutputs();
     isOn = false;
 }
