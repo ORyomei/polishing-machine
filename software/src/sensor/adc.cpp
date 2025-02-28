@@ -20,6 +20,6 @@ int16_t Adc::read()
         rawValue = getLastConversionResults();
         return rawValue;
     }
-    delay(1);
+    delay(10);
     return read();
 }

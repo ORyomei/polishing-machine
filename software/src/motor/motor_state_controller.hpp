@@ -15,6 +15,9 @@ public:
     void off();
     bool motorRunning();
 
+    MotorState getMotorState() { return motorState; }
+    MotorSwitchState getSwitchState() { return switchState; }
+
 private:
     TaskHandle_t motorRunTask, motorReciprocalMotionTask, motorMoveToStandbyTask;
     TaskHandle_t waitForArrivalToStandbyTask;

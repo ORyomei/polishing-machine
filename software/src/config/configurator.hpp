@@ -26,18 +26,20 @@ struct UpperLowerPositionConfig : Config
     bool loadFromJsonStr(const char *jsonStr);
     void loadFromConstants();
     const char *toJsonStr();
+    void copyFrom(UpperLowerPositionConfig &config);
 };
 
 class Configurator
 {
 public:
-    Configurator(MotorController &motorController, Sensor &sensor) : motorController(motorController),
-                                                                     sensor(sensor) {}
+    Configurator(MotorController &motorController, Sensor &sensor);
     void initialize();
     void loadUpperLowerPositionFromFlash();
     void calibrateFromflash();
     void enable();
     void disable();
+    void saveAndDisable();
+    bool enabled();
     void setCurrentPositionUpper();
     void setCurrentPositionLower();
 
@@ -48,13 +50,14 @@ private:
     Flash flash;
     MotorController &motorController;
     Sensor &sensor;
-    UpperLowerPositionConfig upperLowerPositionConfig;
-    Button buttonA = Button(BUTTON_A_PIN, true, 10);
-    Button buttonB = Button(BUTTON_B_PIN, true, 10);
-    Button buttonC = Button(BUTTON_C_PIN, true, 10);
-    bool enabled = false;
-
+    UpperLowerPositionConfig upperLowerPositionConfig;     // 通常の設定値
+    UpperLowerPositionConfig upperLowerPositionConfigTemp; // コンフィギュレーション時に一時的に設定値を保持する
+    Button buttonA = Button(BUTTON_A_PIN, true, 50);
+    Button buttonB = Button(BUTTON_B_PIN, true, 50);
+    Button buttonC = Button(BUTTON_C_PIN, true, 50);
+    // TODO コンフィグレーション中はモーターを止めるようにする
     TaskHandle_t configuratorTask;
+    bool _enabled = false;
     void calibrate();
 };
 

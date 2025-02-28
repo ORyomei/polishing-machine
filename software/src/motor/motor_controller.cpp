@@ -16,14 +16,14 @@ void MotorController::initialize()
 
 void MotorController::on()
 {
-    Serial.println("Motor ON");
+    Serial.println("MotorController::on()");
     stepper.enableOutputs();
     isOn = true;
 }
 
 void MotorController::off()
 {
-    Serial.println("Motor OFF");
+    Serial.println("MotorController::off()");
     stepper.disableOutputs();
     isOn = false;
 }
@@ -51,7 +51,7 @@ void MotorController::startReciprocalMotionControl()
         arrived = false;
         while (!arrived)
         {
-            delay(1);
+            delay(10);
         }
         Serial.println("Arrived at upper position");
         currentPosition = sensor.convertedValue();
@@ -61,7 +61,7 @@ void MotorController::startReciprocalMotionControl()
         arrived = false;
         while (!arrived)
         {
-            delay(1);
+            delay(10);
         }
         Serial.println("Arrived at lower position");
     }
@@ -81,12 +81,12 @@ void MotorController::moveToStanbyPosition()
         {
             break;
         }
-        delay(1);
+        delay(10);
     }
     arrivedAtStandby = true;
     while (true)
     {
-        delay(1);
+        delay(10);
     }
 }
 

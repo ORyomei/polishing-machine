@@ -1,5 +1,7 @@
 #include "configurator.hpp"
 
+Configurator::Configurator(MotorController &motorController, Sensor &sensor) : motorController(motorController), sensor(sensor) {}
+
 void UpperLowerPositionConfig::loadFromConstants()
 {
     upperPosition = UPPER_POSITION;
@@ -35,6 +37,12 @@ const char *UpperLowerPositionConfig::toJsonStr()
     return jsonStr;
 }
 
+void UpperLowerPositionConfig::copyFrom(UpperLowerPositionConfig &config)
+{
+    upperPosition = config.upperPosition;
+    lowerPosition = config.lowerPosition;
+}
+
 void Configurator::initialize()
 {
     flash.initialize();
@@ -43,13 +51,30 @@ void Configurator::initialize()
 
 void Configurator::enable()
 {
-    enabled = true;
+    Serial.println("Configurator Enabled");
+    upperLowerPositionConfigTemp.copyFrom(upperLowerPositionConfig);
+    _enabled = true;
 }
 
 void Configurator::disable()
 {
-    enabled = false;
+    Serial.println("Configurator Disabled");
+    motorController.setUpperPosition(upperLowerPositionConfig.upperPosition);
+    motorController.setLowerPosition(upperLowerPositionConfig.lowerPosition);
+    _enabled = false;
+}
+
+void Configurator::saveAndDisable()
+{
+    Serial.println("Configurator Save and Disable");
+    upperLowerPositionConfig.copyFrom(upperLowerPositionConfigTemp);
     flash.write(UPPER_LOWER_POSITION_FILE_NAME, upperLowerPositionConfig.toJsonStr());
+    _enabled = false;
+}
+
+bool Configurator::enabled()
+{
+    return _enabled;
 }
 
 void Configurator::calibrate()
@@ -76,15 +101,15 @@ void Configurator::calibrateFromflash()
 
 void Configurator::setCurrentPositionUpper()
 {
-    upperLowerPositionConfig.upperPosition = sensor.convertedValue();
-    motorController.setUpperPosition(upperLowerPositionConfig.upperPosition);
+    upperLowerPositionConfigTemp.upperPosition = sensor.convertedValue();
+    motorController.setUpperPosition(upperLowerPositionConfigTemp.upperPosition);
     Serial.printf("Upper Position: %f\n", upperLowerPositionConfig.upperPosition);
 }
 
 void Configurator::setCurrentPositionLower()
 {
-    upperLowerPositionConfig.lowerPosition = sensor.convertedValue();
-    motorController.setLowerPosition(upperLowerPositionConfig.lowerPosition);
+    upperLowerPositionConfigTemp.lowerPosition = sensor.convertedValue();
+    motorController.setLowerPosition(upperLowerPositionConfigTemp.lowerPosition);
     Serial.printf("Lower Position: %f\n", upperLowerPositionConfig.lowerPosition);
 }
 
@@ -95,27 +120,43 @@ void Configurator::run()
         buttonA.read();
         buttonB.read();
         buttonC.read();
-        if (buttonA.wasPressed())
+        if (buttonA.wasReleasefor(3000))
         {
-            if (!enabled)
+            if (enabled())
             {
+                Serial.println("Save and Disable");
+                saveAndDisable();
+            }
+            else
+            {
+                Serial.println("Enable");
+                enable();
+            }
+        }
+        else if (buttonA.wasReleased())
+        {
+            if (!enabled())
+            {
+                Serial.println("Enable");
                 enable();
             }
             else
             {
+                Serial.println("Disable");
                 disable();
             }
         }
+
         else if (buttonB.wasPressed())
         {
-            if (enabled)
+            if (enabled())
             {
                 setCurrentPositionUpper();
             }
         }
         else if (buttonC.wasPressed())
         {
-            if (enabled)
+            if (enabled())
             {
                 setCurrentPositionLower();
             }
@@ -126,7 +167,7 @@ void Configurator::run()
 
 void Configurator::start()
 {
-    xTaskCreatePinnedToCore(runConfigurator, "Configurator", 10000, this, 2, &configuratorTask, 0);
+    xTaskCreatePinnedToCore(runConfigurator, "Configurator", 4096, this, 2, &configuratorTask, 0);
 }
 
 void runConfigurator(void *configurator)

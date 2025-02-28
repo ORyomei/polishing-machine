@@ -4,12 +4,14 @@
 #include "sensor/sensor.hpp"
 #include "switch.hpp"
 #include "config/configurator.hpp"
+#include "ui.hpp"
 
 Sensor sensor;
 MotorSwitch motorSwitch = MotorSwitch();
 MotorController motorController = MotorController(sensor);
 MotorStateController motorStateController = MotorStateController(&motorController);
 Configurator configurator = Configurator(motorController, sensor);
+UI ui = UI(sensor, motorStateController, configurator);
 
 void setup()
 {
@@ -21,21 +23,22 @@ void setup()
   Serial.println("Switch initialized");
   sensor.read();
   configurator.initialize();
+  Serial.println("Configurator initialized");
   configurator.calibrateFromflash();
   configurator.start();
   motorStateController.initialize();
+  ui.initialize();
+  ui.start();
 }
 
 void loop()
 {
   motorSwitch.read();
-  // Serial.printf("Switched: %d, State: %d\n", motorSwitch.changed(), motorSwitch.getState());
   if (motorSwitch.changed())
   {
     motorStateController.setState(motorSwitch.getState());
   }
   sensor.read();
-  // Serial.printf("Raw: %d, Converted: %f\n", sensor.getRawValue(), sensor.convertedValue());
   if (!sensor.isInRange())
   {
     if (motorStateController.motorRunning())
