@@ -96,10 +96,10 @@ void UI::drawConfiguratingBackGround()
 
 void UI::drawRunningBackGround()
 {
-    lcd.fillScreen(BLACK);
+    lcd.fillScreen(GREEN);
     lcd.setCursor(0, 0);
     lcd.setTextSize(4);
-    lcd.setTextColor(WHITE, BLACK);
+    lcd.setTextColor(WHITE, GREEN);
     lcd.printf("Running");
 }
 

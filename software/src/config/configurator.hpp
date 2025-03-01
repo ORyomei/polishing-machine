@@ -11,6 +11,8 @@
 
 #define UPPER_LOWER_POSITION_FILE_NAME "/upper_lower_position.txt"
 
+#define CONFIGURATOR_CYCLE_TIME 23
+
 struct Config
 {
 public:

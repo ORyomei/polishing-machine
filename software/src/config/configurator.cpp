@@ -161,7 +161,7 @@ void Configurator::run()
                 setCurrentPositionLower();
             }
         }
-        delay(10);
+        delay(CONFIGURATOR_CYCLE_TIME);
     }
 }
 

@@ -12,7 +12,7 @@ void MotorStateController::initialize()
 
     xTaskCreatePinnedToCore(_waitForArrivalToStandby, "WaitForArrivalToStandby", 4096, this, 1, &waitForArrivalToStandbyTask, 0);
     vTaskDelete(waitForArrivalToStandbyTask);
-    // setState(MotorState::OFF);
+    setState(MotorState::OFF);
     setState(MotorSwitchState::OFF);
 }
 
@@ -130,7 +130,7 @@ void MotorStateController::waitForArrivalToStandby()
             vTaskDelete(NULL);
             break;
         }
-        delay(10);
+        delay(MOTOR_CONTROL_CYLCLE_TIME);
     }
 }
 
