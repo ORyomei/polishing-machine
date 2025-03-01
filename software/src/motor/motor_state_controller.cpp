@@ -144,6 +144,11 @@ bool MotorStateController::motorRunning()
     return motorState == MotorState::ON || motorState == MotorState::MOVE_TO_STANDBY;
 }
 
+bool MotorStateController::movingToStandby()
+{
+    return motorState == MotorState::MOVE_TO_STANDBY;
+}
+
 void _waitForArrivalToStandby(void *motorStateController)
 {
     ((MotorStateController *)motorStateController)->waitForArrivalToStandby();

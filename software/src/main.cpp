@@ -4,14 +4,14 @@
 #include "sensor/sensor.hpp"
 #include "switch.hpp"
 #include "config/configurator.hpp"
-#include "ui.hpp"
+#include "ui/ui.hpp"
 
 Sensor sensor;
 MotorSwitch motorSwitch = MotorSwitch();
 MotorController motorController = MotorController(sensor);
 MotorStateController motorStateController = MotorStateController(&motorController);
 Configurator configurator = Configurator(motorController, sensor);
-UI ui = UI(sensor, motorStateController, configurator);
+UI ui = UI(sensor, motorStateController, motorController, configurator);
 
 void setup()
 {

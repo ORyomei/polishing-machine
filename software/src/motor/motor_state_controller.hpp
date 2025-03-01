@@ -14,6 +14,7 @@ public:
     void waitForArrivalToStandby();
     void off();
     bool motorRunning();
+    bool movingToStandby();
 
     MotorState getMotorState() { return motorState; }
     MotorSwitchState getSwitchState() { return switchState; }

@@ -25,6 +25,8 @@ public:
 
     void setUpperPosition(double position) { upperPosition = position; }
     void setLowerPosition(double position) { lowerPosition = position; }
+    double getUpperPosition() { return upperPosition; }
+    double getLowerPosition() { return lowerPosition; }
 
 private:
     double upperPosition,
