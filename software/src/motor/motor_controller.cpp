@@ -51,7 +51,7 @@ void MotorController::startReciprocalMotionControl()
         arrived = false;
         while (!arrived)
         {
-            delay(10);
+            delay(MOTOR_CONTROL_CYLCLE_TIME);
         }
         Serial.println("Arrived at upper position");
         currentPosition = sensor.convertedValue();
@@ -61,7 +61,7 @@ void MotorController::startReciprocalMotionControl()
         arrived = false;
         while (!arrived)
         {
-            delay(10);
+            delay(MOTOR_CONTROL_CYLCLE_TIME);
         }
         Serial.println("Arrived at lower position");
     }
@@ -81,12 +81,12 @@ void MotorController::moveToStanbyPosition()
         {
             break;
         }
-        delay(10);
+        delay(MOTOR_CONTROL_CYLCLE_TIME);
     }
     arrivedAtStandby = true;
     while (true)
     {
-        delay(10);
+        delay(MOTOR_CONTROL_CYLCLE_TIME);
     }
 }
 

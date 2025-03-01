@@ -5,11 +5,11 @@
 #include "config/constants.hpp"
 #include "sensor/sensor.hpp"
 
-#define MOTOR_CONTROL_CYLCLE_TIME 30 // ms
-#define MOTOR_MAX_SPEED 3000
-#define MOTOR_ACCELERATION 2000
+#define MOTOR_CONTROL_CYLCLE_TIME 59 // ms
+#define MOTOR_MAX_SPEED 57600
+#define MOTOR_ACCELERATION 64000
 
-#define POSITION_TO_MOTOR_STEPS_COEFFICIENT 753.202
+#define POSITION_TO_MOTOR_STEPS_COEFFICIENT 12051.232
 
 class MotorController
 {
