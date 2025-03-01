@@ -5,7 +5,7 @@
 /// Pins ///
 ////////////
 
-#define STEPPER_DIR_PIN 18
+#define STEPPER_DIR_PIN 25
 #define STEPPER_STEP_PIN 26
 #define STEPPER_ENABLE_PIN 16
 

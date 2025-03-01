@@ -1,7 +1,7 @@
 #ifndef _MOTOR_CONTROOLER_H_
 #define _MOTOR_CONTROOLER_H_
 #include <Arduino.h>
-#include <AccelStepper.h>
+#include "stepper.hpp"
 #include "config/constants.hpp"
 #include "sensor/sensor.hpp"
 
@@ -34,7 +34,7 @@ private:
     bool arrived = false;
     bool arrivedAtStandby = false;
     uint8_t enablePin = STEPPER_ENABLE_PIN;
-    AccelStepper stepper = AccelStepper(AccelStepper::FULL2WIRE, STEPPER_STEP_PIN, STEPPER_DIR_PIN);
+    Stepper stepper = Stepper(Stepper::DRIVER, STEPPER_STEP_PIN, STEPPER_DIR_PIN, -1, -1, false);
     Sensor &sensor;
 };
 
