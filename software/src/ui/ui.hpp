@@ -10,21 +10,14 @@
 #include "out_of_range_screen.hpp"
 #include "running_screen.hpp"
 #include "off_screen.hpp"
+#include "machine_state_controller.hpp"
 
 #define LCD_UPDATE_INTERVAL 50
 
-enum class UIMode
-{
-    CONFIGURATING,
-    EMERGENCY,
-    OUT_OF_RANGE,
-    RUNNING,
-    OFF
-};
 class UI
 {
 public:
-    UI(Sensor &sensor, MotorStateController &motorStateController, MotorController &motorController, Configurator &configurator);
+    UI(Sensor &sensor, MotorStateController &motorStateController, MotorController &motorController, Configurator &configurator, MachineStateController &machineStateController);
     void initialize();
     void run();
     void start();
@@ -36,7 +29,8 @@ private:
     MotorStateController &motorStateController;
     MotorController &motorController;
     Configurator &configurator;
-    UIMode mode;
+    MachineStateController &machineStateController;
+    MachineState state = MachineState::OFF;
 
     ConfigurationScreen configurationScreen;
     EmergencyScreen emergencyScreen;
@@ -46,11 +40,8 @@ private:
 
     Screen *currentScreen = nullptr;
 
-    UIMode getMode();
     void update();
 };
-
-const char *UIModeToString(UIMode mode);
 
 void runUI(void *ui);
 

@@ -46,7 +46,9 @@ public:
     void setCurrentPositionLower();
 
     void start();
+    void stop();
     void run();
+    void cycle();
 
 private:
     Flash flash;
@@ -54,11 +56,11 @@ private:
     Sensor &sensor;
     UpperLowerPositionConfig upperLowerPositionConfig;     // 通常の設定値
     UpperLowerPositionConfig upperLowerPositionConfigTemp; // コンフィギュレーション時に一時的に設定値を保持する
-    Button buttonA = Button(BUTTON_A_PIN, true, 50);
+    // Button buttonA = Button(BUTTON_A_PIN, true, 50);
     Button buttonB = Button(BUTTON_B_PIN, true, 50);
     Button buttonC = Button(BUTTON_C_PIN, true, 50);
     // TODO コンフィグレーション中はモーターを止めるようにする
-    TaskHandle_t configuratorTask;
+    TaskHandle_t taskHandle;
     bool _enabled = false;
     void calibrate();
 };

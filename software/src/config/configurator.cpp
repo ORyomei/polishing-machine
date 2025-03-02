@@ -47,12 +47,16 @@ void Configurator::initialize()
 {
     flash.initialize();
     // TODO initialize 失敗時の処理
+
+    xTaskCreatePinnedToCore(runConfigurator, "Configurator", 4096, this, 2, &taskHandle, 0);
+    vTaskDelete(taskHandle);
 }
 
 void Configurator::enable()
 {
     Serial.println("Configurator Enabled");
     upperLowerPositionConfigTemp.copyFrom(upperLowerPositionConfig);
+    start();
     _enabled = true;
 }
 
@@ -61,6 +65,7 @@ void Configurator::disable()
     Serial.println("Configurator Disabled");
     motorController.setUpperPosition(upperLowerPositionConfig.upperPosition);
     motorController.setLowerPosition(upperLowerPositionConfig.lowerPosition);
+    stop();
     _enabled = false;
 }
 
@@ -113,61 +118,49 @@ void Configurator::setCurrentPositionLower()
     Serial.printf("Lower Position: %f\n", upperLowerPositionConfig.lowerPosition);
 }
 
+void Configurator::cycle()
+{
+    buttonB.read();
+    buttonC.read();
+    if (buttonB.wasPressed())
+    {
+        if (enabled())
+        {
+            setCurrentPositionUpper();
+        }
+    }
+    else if (buttonC.wasPressed())
+    {
+        if (enabled())
+        {
+            setCurrentPositionLower();
+        }
+    }
+}
+
 void Configurator::run()
 {
     while (true)
     {
-        buttonA.read();
-        buttonB.read();
-        buttonC.read();
-        if (buttonA.wasReleasefor(3000))
-        {
-            if (enabled())
-            {
-                Serial.println("Save and Disable");
-                saveAndDisable();
-            }
-            else
-            {
-                Serial.println("Enable");
-                enable();
-            }
-        }
-        else if (buttonA.wasReleased())
-        {
-            if (!enabled())
-            {
-                Serial.println("Enable");
-                enable();
-            }
-            else
-            {
-                Serial.println("Disable");
-                disable();
-            }
-        }
-
-        else if (buttonB.wasPressed())
-        {
-            if (enabled())
-            {
-                setCurrentPositionUpper();
-            }
-        }
-        else if (buttonC.wasPressed())
-        {
-            if (enabled())
-            {
-                setCurrentPositionLower();
-            }
-        }
+        cycle();
         delay(CONFIGURATOR_CYCLE_TIME);
     }
 }
 
 void Configurator::start()
 {
-    xTaskCreatePinnedToCore(runConfigurator, "Configurator", 4096, this, 2, &configuratorTask, 0);
+    if (eTaskGetState(taskHandle) != eRunning)
+    {
+        xTaskCreatePinnedToCore(runConfigurator, "Configurator", 4096, this, 2, &taskHandle, 0);
+    }
+}
+
+void Configurator::stop()
+{
+    if (eTaskGetState(taskHandle) == eRunning)
+    {
+        vTaskDelete(taskHandle);
+    }
 }
 
 void runConfigurator(void *configurator)
