@@ -89,7 +89,6 @@ void MotorController::moveToStanbyPosition()
         delay(MOTOR_CONTROL_CYLCLE_TIME);
     }
 }
-
 void startMotorRun(void *motorController)
 {
     MotorController *controller;
