@@ -5,6 +5,7 @@
 #include "sensor/sensor.hpp"
 #include "config/configurator.hpp"
 #include "switch/switch.hpp"
+#include "vibrator/vibrator.hpp"
 #include <utility/Button.h>
 #include <utility/Config.h>
 
@@ -22,7 +23,7 @@ enum class MachineState
 class MachineStateController
 {
 public:
-    MachineStateController(MotorStateController &motorStateController, Sensor &sensor, Configurator &configurator);
+    MachineStateController(MotorStateController &motorStateController, Vibrator &vibrator, Sensor &sensor, Configurator &configurator);
     void initialize();
     void update();
     void run();
@@ -31,6 +32,7 @@ public:
 
 private:
     MotorStateController &motorStateController;
+    Vibrator &vibrator;
     Sensor &sensor;
     Configurator &configurator;
     MotorSwitch motorSwitch = MotorSwitch();

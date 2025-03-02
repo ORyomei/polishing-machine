@@ -6,12 +6,14 @@
 #include "config/configurator.hpp"
 #include "ui/ui.hpp"
 #include "machine_state_controller.hpp"
+#include "vibrator/vibrator.hpp"
 
 Sensor sensor;
 MotorController motorController = MotorController(sensor);
 MotorStateController motorStateController = MotorStateController(&motorController);
+Vibrator vibrator = Vibrator();
 Configurator configurator = Configurator(motorController, sensor);
-MachineStateController machineStateConotroller = MachineStateController(motorStateController, sensor, configurator);
+MachineStateController machineStateConotroller = MachineStateController(motorStateController, vibrator, sensor, configurator);
 UI ui = UI(sensor, motorStateController, motorController, configurator, machineStateConotroller);
 
 void setup()
@@ -24,6 +26,7 @@ void setup()
   Serial.println("Configurator initialized");
   configurator.calibrateFromflash();
   motorStateController.initialize();
+  vibrator.initialize();
   machineStateConotroller.initialize();
   delay(1);
   // machineStateConotroller.start();

@@ -1,7 +1,7 @@
 #include "machine_state_controller.hpp"
 
-MachineStateController::MachineStateController(MotorStateController &motorStateController, Sensor &sensor, Configurator &configurator)
-    : motorStateController(motorStateController), sensor(sensor), configurator(configurator)
+MachineStateController::MachineStateController(MotorStateController &motorStateController, Vibrator &vibrator, Sensor &sensor, Configurator &configurator)
+    : motorStateController(motorStateController), vibrator(vibrator), sensor(sensor), configurator(configurator)
 {
     state = MachineState::OFF;
 }
@@ -33,9 +33,9 @@ void MachineStateController::update()
             nextState = MachineState::CONFIGURATING;
         }
         else if (motorSwitch.changed() && motorSwitch.getState() == MotorSwitchState::ON)
-        // else if (motorSwitch.getState() == MotorSwitchState::ON)
         {
             motorStateController.setState(MotorSwitchState::ON);
+            vibrator.on();
             nextState = MachineState::RUNNING;
         }
         break;
@@ -64,16 +64,19 @@ void MachineStateController::update()
         if (motorSwitch.getState() == MotorSwitchState::EMERGENCY)
         {
             motorStateController.setState(MotorSwitchState::EMERGENCY);
+            vibrator.off();
             nextState = MachineState::EMERGENCY;
         }
         else if (!sensor.isInRange())
         {
             motorStateController.setState(MotorSwitchState::EMERGENCY);
+            vibrator.off();
             nextState = MachineState::OUT_OF_RANGE;
         }
         else if (motorSwitch.changed() && motorSwitch.getState() == MotorSwitchState::OFF)
         {
             motorStateController.setState(MotorSwitchState::OFF);
+            vibrator.off();
         }
         break;
     case MachineState::EMERGENCY:
