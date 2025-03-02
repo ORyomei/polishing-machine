@@ -12,7 +12,7 @@
 #include "off_screen.hpp"
 #include "machine_state_controller.hpp"
 
-#define LCD_UPDATE_INTERVAL 50
+#define LCD_UPDATE_INTERVAL 100
 
 class UI
 {
