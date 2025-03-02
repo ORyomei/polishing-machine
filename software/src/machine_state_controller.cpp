@@ -78,6 +78,11 @@ void MachineStateController::update()
             motorStateController.setState(MotorSwitchState::OFF);
             vibrator.off();
         }
+        else if (motorStateController.movingToStandby() && motorSwitch.getState() == MotorSwitchState::ON)
+        {
+            motorStateController.setState(MotorSwitchState::ON);
+            nextState = MachineState::RUNNING;
+        }
         break;
     case MachineState::EMERGENCY:
         if (motorSwitch.changed() && motorSwitch.getState() == MotorSwitchState::OFF)
