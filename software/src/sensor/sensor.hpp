@@ -3,16 +3,7 @@
 
 #include <Arduino.h>
 #include "adc.hpp"
-
-#define SENSOR_MIN 10.0  // mm
-#define SENSOR_MAX 147.0 // mm
-
-// TODO change
-#define SENSOR_LOWER_LIMIT 20.0  // mm
-#define SENSOR_UPPER_LIMIT 140.0 // mm
-
-#define SENSOR_RAW_MIN 650
-#define SENSOR_RAW_MAX 25250
+#include "config/constants.hpp"
 
 #define SENSOR_IN_RANGE_PERIOD 100 // ms
 
