@@ -7,7 +7,8 @@ OutOfRangeScreen::OutOfRangeScreen(M5Display &lcd, Sensor &sensor)
 
 void OutOfRangeScreen::draw()
 {
-    setColor(WHITE, RED);
+    // setColor(WHITE, RED);
+    setColor(WHITE, ORANGE);
     lcd.setTextSize(4);
     lcd.setCursor(0, 0);
     lcd.print("OUT OF RANGE !!");
