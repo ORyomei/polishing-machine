@@ -8,7 +8,7 @@
 #define SENSOR_MAX 147.0 // mm
 
 // TODO change
-#define SENSOR_LOWER_LIMIT 30.0  // mm
+#define SENSOR_LOWER_LIMIT 20.0  // mm
 #define SENSOR_UPPER_LIMIT 140.0 // mm
 
 #define SENSOR_RAW_MIN 650
