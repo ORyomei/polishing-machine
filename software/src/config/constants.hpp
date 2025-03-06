@@ -21,6 +21,6 @@
 
 #define LOWER_POSITION 30.0
 #define UPPER_POSITION 50.0
-#define STANDBY_POSITION 110.0
+#define STANDBY_POSITION 131.8
 
 #endif

@@ -17,7 +17,7 @@ void OutOfRangeScreen::draw()
     lcd.print("h:         mm");
     lcd.setTextSize(3);
     lcd.setCursor(0, 110);
-    lcd.print("Heigt must be within 10 - 115 mm");
+    lcd.printf("Heigt must be within %5.2f - %5.2f mm", sensor.getLowerLimit(), sensor.getUpperLimit());
 }
 
 void OutOfRangeScreen::update()

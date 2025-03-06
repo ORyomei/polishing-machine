@@ -37,9 +37,11 @@ void ConfigurationScreen::draw()
 
 void ConfigurationScreen::update()
 {
+    lcd.setTextColor(WHITE, sensor.isInRange() ? BLUE : RED);
     lcd.setCursor(80, 40);
     lcd.setTextSize(4);
     lcd.printf("%6.2lf", sensor.convertedValue());
+    lcd.setTextColor(WHITE, BLUE);
     lcd.setCursor(80, 80);
     lcd.setTextSize(2);
     lcd.printf("%5.2d", sensor.getRawValue());

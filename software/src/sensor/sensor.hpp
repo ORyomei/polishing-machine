@@ -62,6 +62,8 @@ public:
     double getMaxValue();
     double getMinValue();
     int16_t getRawValue();
+    double getUpperLimit();
+    double getLowerLimit();
 
 protected:
     Adc adc;

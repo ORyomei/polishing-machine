@@ -79,3 +79,13 @@ void Sensor::read()
 {
     rawValue = adc.read();
 }
+
+double Sensor::getUpperLimit()
+{
+    return upperLimit;
+}
+
+double Sensor::getLowerLimit()
+{
+    return lowerLimit;
+}
